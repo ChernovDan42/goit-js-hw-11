@@ -5,7 +5,7 @@ const BASE_URL='https://pixabay.com/api/'
 
 
 
-export default class PixabayApi {
+export class PixabayApi {
     constructor() {
         this.searchQuery = '';
         this.page = 1;
