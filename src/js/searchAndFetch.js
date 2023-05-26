@@ -8,6 +8,7 @@ import { renderMarkup } from "./renderMarkup";
 import { loadMore } from './loadMore';
 import { clearGallery } from './helpers/clearGallery';
 
+// /kkk
 
 export const pixabayApiService = new PixabayApi();
 
