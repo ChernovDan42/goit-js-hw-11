@@ -3,7 +3,7 @@ import SimpleLightbox from "simplelightbox";
 import Notiflix from 'notiflix';
 import "simplelightbox/dist/simple-lightbox.min.css";
 import { refs } from './refs';
-import { onSuccess, onFailure } from './helpers/notiflyx';
+import { onSuccess, onFailure, onWarning } from './helpers/notiflyx';
 import { renderMarkup } from "./renderMarkup";
 import { clearGallery } from './helpers/clearGallery';
 import { PixabayApi } from './PixabayApiFetch';
@@ -25,6 +25,7 @@ async function onSearch(e) {
     return alert('Введіть запрос')
   }
   
+  
   refs.loadMoreBtn.classList.add('is-hidden')
   try {
     pixabayApiService.resetPage();
@@ -32,11 +33,18 @@ async function onSearch(e) {
     if (images.totalHits === 0) {
       throw new Error
     }
+
+    if (images.hits.length < 40) {
+      const render = renderMarkup(images.hits);
+      onSuccess(images)
+      return
+    }
+  
     refs.loadMoreBtn.classList.remove('is-hidden')
     onSuccess(images)
     
-    const render = await renderMarkup(images.hits);
-    const lightbox = new SimpleLightbox('.gallery a', { captionsData: "alt",captionDelay:250})
+    const render = renderMarkup(images.hits);
+    const lightbox = new SimpleLightbox('.gallery a', {captionDelay:250})
   } catch (error) {
     onFailure()
     clearGallery()
@@ -52,13 +60,14 @@ async function loadMore(e) {
   
  try {
    const images = await pixabayApiService.fetchImages();
-    const render = await renderMarkup(images.hits);
+    const render = renderMarkup(images.hits);
    if (images.hits.length < 40) {
      throw new Error
-     }
+   }
+   
  } catch (error) {
    refs.loadMoreBtn.classList.add('is-hidden');
-   Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.")
+  onWarning()
     console.log(error);
   }
   
