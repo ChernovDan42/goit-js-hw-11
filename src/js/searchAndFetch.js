@@ -1,15 +1,16 @@
 
 import SimpleLightbox from "simplelightbox";
+import Notiflix from 'notiflix';
 import "simplelightbox/dist/simple-lightbox.min.css";
 import { refs } from './refs';
 import { onSuccess, onFailure } from './helpers/notiflyx';
 import { renderMarkup } from "./renderMarkup";
-import { loadMore } from './loadMore';
 import { clearGallery } from './helpers/clearGallery';
-import { pixabayApiService } from './helpers/pixabayApiService';
+import { PixabayApi } from './pixabayApiFetch';
 
 
 
+const pixabayApiService = new PixabayApi();
 
 refs.searchForm.addEventListener('submit', onSearch)
 refs.loadMoreBtn.addEventListener('click', loadMore)
@@ -44,6 +45,23 @@ async function onSearch(e) {
 }
 
 
+async function loadMore(e) {
+  e.preventDefault();
 
+  pixabayApiService.incrementPage()
+  
+ try {
+   const images = await pixabayApiService.fetchImages();
+    const render = await renderMarkup(images.hits);
+   if (images.hits.length < 40) {
+     throw new Error
+     }
+ } catch (error) {
+   refs.loadMoreBtn.classList.add('is-hidden');
+   Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.")
+    console.log(error);
+  }
+  
+}
 
 
