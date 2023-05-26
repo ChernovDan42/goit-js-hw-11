@@ -6,7 +6,7 @@ import { refs } from './refs';
 import { onSuccess, onFailure } from './helpers/notiflyx';
 import { renderMarkup } from "./renderMarkup";
 import { clearGallery } from './helpers/clearGallery';
-import { PixabayApi } from './pixabayApiFetch';
+import { PixabayApi } from './PixabayApiFetch';
 
 
 
