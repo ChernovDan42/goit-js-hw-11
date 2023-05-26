@@ -1,4 +1,4 @@
-import { pixabayApiService } from './searchAndFetch'
+import { pixabayApiService } from './helpers/pixabayApiService'
 import { refs } from './refs'
 import Notiflix from 'notiflix';
 import { renderMarkup } from "./renderMarkup";

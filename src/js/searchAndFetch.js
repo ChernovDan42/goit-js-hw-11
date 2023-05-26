@@ -1,16 +1,15 @@
 
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
-import { PixabayApi } from './pixabayApiFetch';
 import { refs } from './refs';
 import { onSuccess, onFailure } from './helpers/notiflyx';
 import { renderMarkup } from "./renderMarkup";
 import { loadMore } from './loadMore';
 import { clearGallery } from './helpers/clearGallery';
+import { pixabayApiService } from './helpers/pixabayApiService';
 
-// /kkk
 
-export const pixabayApiService = new PixabayApi();
+
 
 refs.searchForm.addEventListener('submit', onSearch)
 refs.loadMoreBtn.addEventListener('click', loadMore)
