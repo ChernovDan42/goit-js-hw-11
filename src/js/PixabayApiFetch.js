@@ -19,8 +19,9 @@ export default class PixabayApi {
                 url: `${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&page=${this.page}&per_page=40&safesearch=true&orientation=horizontal`,
                 responseType: 'json'
             });
-            const imgs = response.data.hits
-            console.log(imgs); return imgs
+           
+            const imgs = response.data
+         return imgs
         } catch (error) {
             console.log(error);
         }
