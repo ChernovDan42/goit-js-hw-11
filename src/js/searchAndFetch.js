@@ -1,6 +1,5 @@
 
 import SimpleLightbox from "simplelightbox";
-import Notiflix from 'notiflix';
 import "simplelightbox/dist/simple-lightbox.min.css";
 import { refs } from './refs';
 import { onSuccess, onFailure, onWarning } from './helpers/notiflyx';
@@ -59,19 +58,21 @@ async function loadMore(e) {
   e.preventDefault();
 
   pixabayApiService.incrementPage()
-  
+  refs.loadMoreBtn.classList.add('is-hidden');
  try {
    const images = await pixabayApiService.fetchImages();
     const render = renderMarkup(images.hits);
    if (images.hits.length < 40) {
      throw new Error
    }
-    smoothScroll()
+   smoothScroll()
+   refs.loadMoreBtn.classList.remove('is-hidden');
    
  } catch (error) {
    refs.loadMoreBtn.classList.add('is-hidden');
   onWarning()
-    console.log(error);
+   console.log(error);
+   smoothScroll();
   }
   
 }
