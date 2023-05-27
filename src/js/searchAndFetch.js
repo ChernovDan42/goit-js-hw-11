@@ -16,6 +16,7 @@ refs.searchForm.addEventListener('submit', onSearch)
 refs.loadMoreBtn.addEventListener('click', loadMore)
 
 
+
 async function onSearch(e) {
   e.preventDefault();
 
@@ -44,7 +45,8 @@ async function onSearch(e) {
     onSuccess(images)
     
     const render = renderMarkup(images.hits);
-    const lightbox = new SimpleLightbox('.gallery a', {captionDelay:250})
+    const lightbox = new SimpleLightbox('.gallery a', { captionDelay: 250 })
+   
   } catch (error) {
     onFailure()
     clearGallery()
@@ -64,6 +66,14 @@ async function loadMore(e) {
    if (images.hits.length < 40) {
      throw new Error
    }
+    const { height: cardHeight } = document
+  .querySelector(".gallery")
+  .firstElementChild.getBoundingClientRect();
+
+window.scrollBy({
+  top: cardHeight * 2,
+  behavior: "smooth",
+});
    
  } catch (error) {
    refs.loadMoreBtn.classList.add('is-hidden');
@@ -72,5 +82,4 @@ async function loadMore(e) {
   }
   
 }
-
 
