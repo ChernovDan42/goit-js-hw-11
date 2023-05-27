@@ -7,7 +7,7 @@ import { onSuccess, onFailure, onWarning } from './helpers/notiflyx';
 import { renderMarkup } from "./renderMarkup";
 import { clearGallery } from './helpers/clearGallery';
 import { PixabayApi } from './PixabayApiFetch';
-
+import {smoothScroll} from './helpers/smooth_scroll'
 
 
 const pixabayApiService = new PixabayApi();
@@ -66,14 +66,7 @@ async function loadMore(e) {
    if (images.hits.length < 40) {
      throw new Error
    }
-    const { height: cardHeight } = document
-  .querySelector(".gallery")
-  .firstElementChild.getBoundingClientRect();
-
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: "smooth",
-});
+    smoothScroll()
    
  } catch (error) {
    refs.loadMoreBtn.classList.add('is-hidden');
