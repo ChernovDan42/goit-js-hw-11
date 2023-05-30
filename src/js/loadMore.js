@@ -6,12 +6,15 @@ import { renderMarkup } from "./renderMarkup";
 
 export async function loadMore(e) {
   e.preventDefault();
+  // lightbox.refresh();
 
   pixabayApiService.incrementPage()
   
  try {
-   const images = await pixabayApiService.fetchImages();
-    const render = await renderMarkup(images.hits);
+   const fetchedImages = await pixabayApiService.fetchImages();
+  const images = fetchedImages.data;
+  renderMarkup(images.hits);
+   
    if (images.hits.length < 40) {
      throw new Error
      }

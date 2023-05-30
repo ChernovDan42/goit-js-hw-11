@@ -13,13 +13,13 @@ const pixabayApiService = new PixabayApi();
 
 refs.searchForm.addEventListener('submit', onSearch)
 refs.loadMoreBtn.addEventListener('click', loadMore)
-
+ const lightbox = new SimpleLightbox('.gallery a', { captionDelay: 250 });
 
 
 async function onSearch(e) {
   e.preventDefault();
 
-  pixabayApiService.query = e.currentTarget.elements.searchQuery.value;
+  pixabayApiService.query = e.currentTarget.elements.searchQuery.value.trim();
   clearGallery()
   if (pixabayApiService.query === '') {
     return alert('Введіть запрос')
@@ -29,7 +29,8 @@ async function onSearch(e) {
   refs.loadMoreBtn.classList.add('is-hidden')
   try {
     pixabayApiService.resetPage();
-    const images = await pixabayApiService.fetchImages();
+    const fetchedImages = await pixabayApiService.fetchImages();
+    const images = fetchedImages.data;
     if (images.totalHits === 0) {
       throw new Error
     }
@@ -43,16 +44,20 @@ async function onSearch(e) {
     refs.loadMoreBtn.classList.remove('is-hidden')
     onSuccess(images)
     
-    const render = renderMarkup(images.hits);
-    const lightbox = new SimpleLightbox('.gallery a', { captionDelay: 250 })
+ 
+     renderMarkup(images.hits);
    
+     lightbox.refresh();
   } catch (error) {
     onFailure()
     clearGallery()
     console.log(error);
   }
+ 
 }
 
+
+let currentPage = 1;
 
 async function loadMore(e) {
   e.preventDefault();
@@ -60,9 +65,14 @@ async function loadMore(e) {
   pixabayApiService.incrementPage()
   refs.loadMoreBtn.classList.add('is-hidden');
  try {
-   const images = await pixabayApiService.fetchImages();
-    const render = renderMarkup(images.hits);
-   if (images.hits.length < 40) {
+   const fetchedImages = await pixabayApiService.fetchImages();
+   const images = fetchedImages.data;
+   renderMarkup(images.hits);
+   const maxPages = Math.ceil(images.totalHits / images.hits.length);
+   currentPage += 1;
+   console.log(maxPages);
+   console.log(currentPage);
+   if (maxPages === currentPage) {
      throw new Error
    }
    smoothScroll()
@@ -73,7 +83,8 @@ async function loadMore(e) {
   onWarning()
    console.log(error);
    smoothScroll();
-  }
+ }
+  lightbox.refresh();
   
 }
 

@@ -1,6 +1,7 @@
 import { refs } from './refs';
 
 export function renderMarkup(api) {
+  console.log(api);
 
   const murkup = api.map((photo) => {
     const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = photo;
