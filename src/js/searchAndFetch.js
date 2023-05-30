@@ -10,6 +10,7 @@ import {smoothScroll} from './helpers/smooth_scroll'
 
 
 const pixabayApiService = new PixabayApi();
+let currentPage = 1;
 
 refs.searchForm.addEventListener('submit', onSearch)
 refs.loadMoreBtn.addEventListener('click', loadMore)
@@ -28,6 +29,7 @@ async function onSearch(e) {
   
   refs.loadMoreBtn.classList.add('is-hidden')
   try {
+    currentPage = 1
     pixabayApiService.resetPage();
     const fetchedImages = await pixabayApiService.fetchImages();
     const images = fetchedImages.data;
@@ -57,7 +59,7 @@ async function onSearch(e) {
 }
 
 
-let currentPage = 1;
+
 
 async function loadMore(e) {
   e.preventDefault();
@@ -73,6 +75,10 @@ async function loadMore(e) {
    console.log(maxPages);
    console.log(currentPage);
    if (maxPages === currentPage) {
+     throw new Error
+   }
+
+   if (images.hits.length < 40) {
      throw new Error
    }
    smoothScroll()
